@@ -6,7 +6,6 @@ config = Config('configuration.yaml')
 config.show_label()
 
 def main():
-    
     updater = Updater(config.token)
     dp = updater.dispatcher
     for k,v in index().items():

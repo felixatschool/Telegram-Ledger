@@ -10,6 +10,7 @@ from .start import start
 from .echo import echo
 from .help import help_command
 from .hello import hello
+from .report import report
 from .whoami import whoami
 
 command_map = {
@@ -21,6 +22,7 @@ command_map = {
     # ....
     'whoami' : whoami,
     'hello' : hello,
+    'report' : report,
     'help' : help_command
     }
 
