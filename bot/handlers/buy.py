@@ -1,5 +1,6 @@
 from .users import getUser
 from .users import pushMoney
+from .users import getMoney
 from .report import report
 
 command = []
@@ -11,17 +12,16 @@ def getInputCommand(message, userCommand):
         if message.count('-') > 2:
             return []
         while message[index:].find('-') != -1:
-            print('in while')
             c_pos = message[index:].find('-') + 1 + index
             if c_pos == -1 or c_pos == len(message):
                 print('no cpos')
                 return []
-            print('index + c_pos : '+str(index+c_pos))
+            #print('index + c_pos : '+str(index+c_pos))
             e_pos = message[index + c_pos:].find(' ') + 2 + index + c_pos
-            print('e_pos : '+str(e_pos))
+            #print('e_pos : '+str(e_pos))
 
             d_pos = message[index + c_pos:].find(' ') 
-            print('d_pos : '+str(d_pos))
+            #print('d_pos : '+str(d_pos))
             if d_pos == -1:
                 d_pos = len(message)
             else:
@@ -46,7 +46,6 @@ def getInputCommand(message, userCommand):
             if 'Everyone' in command and len(command)>1:
                 return []
             index = c_pos
-            print('end of loop')
         return command
 
 
@@ -56,14 +55,12 @@ def buy(update, context):
     /buy:
     Declare a purchase and split it with others
     """
-
-    print('start')
     userid = update.message.from_user.id
     user = getUser(update.message.from_user.id)
 
     if user is None:
-            update.message.reply_text('<b> User not found </b>', parse_mode='HTML')
-            return
+        update.message.reply_text('<b> User not found </b>', parse_mode='HTML')
+        return
     try:
         if len(update.message.text) == 4:
             raise Exception('Please specify an amount and target.\nTo get more help type \'/buy -help\'')
@@ -87,10 +84,13 @@ def buy(update, context):
         if len(command) == 0:
             raise Exception('Not a valid target.\nTo get more help type \'/buy -help\'')
 
+        oldLink = getMoney(userid)
         link = pushMoney(user, value, command, False)
         out = '<b>Dear '+user.name+', citizen of Clémence</b> \n<u>Here\'s your account updated report:</u>\n\n'
         for k, v in link.items():
-            out += k + ' : ' + str(v)+'$\n'
+            if(v == oldLink[k]):
+                continue
+            out += k + ' : ' + str(oldLink[k])  + '$ --> ' + str(v)+'$\n'
         print('done')
 
     except Exception as e:

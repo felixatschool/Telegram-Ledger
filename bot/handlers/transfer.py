@@ -3,6 +3,7 @@ from .users import pushMoney
 
 from .users import getUser
 from .users import pushMoney
+from .users import getMoney
 from .report import report
 
 command = []
@@ -90,10 +91,13 @@ def transfer(update, context):
         if len(command) == 0:
             raise Exception('Not a valid target.\nTo get more help type \'/buy -help\'')
 
+        oldLink = getMoney(userid)
         link = pushMoney(user, value, command, True)
         out = '<b>Dear '+user.name+', citizen of Clémence</b> \n<u>Here\'s your account updated report:</u>\n\n'
         for k, v in link.items():
-            out += k + ' : ' + str(v)+'$\n'
+            if(v == oldLink[k]):
+                continue
+            out += k + ' : ' + str(oldLink[k]) + '$ --> ' + str(v)+'$\n'
         print('done')
 
     except Exception as e:
