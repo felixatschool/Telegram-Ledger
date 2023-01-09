@@ -11,6 +11,7 @@ from .report import report
 from .buy import buy
 from .transfer import transfer
 from .admin import admin
+from .logger import log
 
 command_map = {
     'report' : report,
