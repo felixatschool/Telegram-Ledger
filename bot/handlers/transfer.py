@@ -3,7 +3,9 @@ from .users import pushMoney
 
 from .users import getUser
 from .users import pushMoney
+from .users import getMoney
 from .report import report
+from .logger import log
 
 command = []
 
@@ -90,12 +92,19 @@ def transfer(update, context):
         if len(command) == 0:
             raise Exception('Not a valid target.\nTo get more help type \'/buy -help\'')
 
+        oldLink = getMoney(userid)
         link = pushMoney(user, value, command, True)
-        out = '<b>Dear '+user.name+', citizen of Clémence</b> \n<u>Here\'s your account updated report:</u>\n\n'
+        out = ''
+        if update.message.text[-6:] == "/nolog":
+            out += user.name + ': '+update.message.text[1:-7] + '\n'
+        out += '<b>Dear '+user.name+', citizen of Clémence</b> \n<u>Here\'s your account updated report:</u>\n\n'
         for k, v in link.items():
-            out += k + ' : ' + str(v)+'$\n'
+            if(v == oldLink[k]):
+                continue
+            out += k + ' : ' + str(oldLink[k]) + '$ --> ' + str(v)+'$\n'
         print('done')
 
     except Exception as e:
         out = str(e)
+    log(userid, update.message.text)
     update.message.reply_text(out, parse_mode='HTML')

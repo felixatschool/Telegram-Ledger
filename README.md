@@ -1,19 +1,19 @@
-# Python Telegram Bot Template
+# Python Telegram Ledgerbot
 
-Modular customizable `python-telegram-bot` template to speed-up development process.
+This bot has been developped to allow users to keep track of expenses in a telegram groupchat.
+Forked from jansenicus [python-telegram-bot-template](https://github.com/jansenicus/python-telegram-bot-template)
+
+![Ledgerbot](/assets/ledgerbot.png?raw=true "Ledgerbot")
 
 ## Features
 
-- ### _Easy configuration_ with a yaml file
+- ### Split an expenses with another user
 
-- ### _Clear separation between Development Bot vs Production Bot_ 
+- ### Split an expenses with every other users
 
-- ### _Automated help text_ based on `docstring`
+- ### Refund a single user
 
-- ### _Simplicity and sophistication met in one `handlers` directory_
-
-- ### _Ready to deploy_ as a docker container
-
+- ### Display the value owed to every other users
 
 
 ## _Easy configuration_ with a yaml file
@@ -55,35 +55,6 @@ mode: prod
 
   - `handlers` directory: as a placeholder for all command handlers  
   - `index.py` file: to register all the function members
-  - 
-  - sample command handlers
-    - `echo.py` file: `/echo` command handler
-    - `start.py` file: `/start` command handler
-    - `hello.py` file: `/hello` command handler
-    - `help.py` file: `/help` command handler
-    - `whoami.py` file: `/whoami` command handler
-
-
-## _Automated help text_ based on `docstring`
-  - `help.py` will generate help text using `docstring` from all the function members
-  - _*writing help as you code*_
-    ```python
-
-    def hello(update, context):
-    """
-    /hello
-    just say hello and reply
-    """
-    update.message.reply_text(
-        'Hi {}, how are you?'.format(update.message.from_user.first_name))
-
-    ```
-  - will produce help text
-    ```
-    /hello
-    just say hello and reply
-    ```
-
 
 ## _Ready to deploy_ as a docker container
 Just run
@@ -102,7 +73,7 @@ docker-compose up --build
   ## 2. Clone This Repository
   ```bash
 
-    git clone https://github.com/jansenicus/python-telegram-bot-template
+    git clone https://github.com/felixatschool/telegram-ledgerbot
 
 
   ```
@@ -137,14 +108,14 @@ prod:
   ### Build Docker container
   ```bash
 
-      docker build -t python-telegram-bot -f Dockerfile .
+      docker build -t telegram-ledgerbot -f Dockerfile .
 
   ```
 
   ### Run Docker container as a Service
   ```bash
 
-      docker run -it --workdir /home python-telegram-bot pipenv run python main.py
+      docker run -it --workdir /home telegram-ledgerbot pipenv run python main.py
 
   ```
   ### Build and run in one go
@@ -160,12 +131,3 @@ prod:
       docker-compose up -d --build
 
   ```
-
-# Command Handlers for Further Development
-All command handlers are put in one directory `handlers` and registered in one file `index.py`. The result is a convenient way to import all command handlers in one `import` call:
-
-```
-from handlers.index import index
-```
-
-[Read More...](bot/handlers/README.md)

@@ -1,5 +1,6 @@
 configuration.yaml
 firebasekey.json
+log.txt
 test*.py
 Pipfile
 Pipfile.lock

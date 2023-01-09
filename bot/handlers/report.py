@@ -13,8 +13,7 @@ def report(update, context):
             update.message.reply_text('<b> User not found </b>', parse_mode='HTML')
             return
             
-    #pushMoney(user.id)
     text = '<b>Dear '+user.name+', citizen of Clémence</b> \n<u>Here\'s your account report:</u>\n\n'
-    for k, v in user.link.items():
+    for k, v in user.getlink().items():
         text += k + ' : ' + str(v)+'$\n'
     update.message.reply_text(text, parse_mode='HTML')

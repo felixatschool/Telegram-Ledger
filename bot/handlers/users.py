@@ -8,39 +8,75 @@ users.py
 define users of the ledger
 """
 
-class user:
+class User:
     def __init__(self, n, i):
-        self.name = n
+        self.name = n            
         self.id = i
         self.value = 0
-        self.output = ' : '+f'{self.value}'+'$\n'
 
     def setlink(self, link):
         self.link = link
+         
+    def getlink(self):    
+        return self.link    
 
-    def getlink(self, link):
-        return self.link
+    def getCommand(self):
+        command = []
+        for k,v in self.link.items():
+            command.append(k)
+        return command
 
-
-Anouk = user("Anouk", 5503217123)
-Daphne = user("Daphne", 5725343334)
-Felix = user("Felix", 5503217122)
-Kevin = user("Kevin", 5765549475)
-
-
-users_list = [Anouk, Daphne, Felix, Kevin]
 path = './firebasekey.json'
 cred = credentials.Certificate(path)
 app = firebase_admin.initialize_app(cred)
 db = firestore.client()
+db_users = []
 
-def pushMoney(identifier):
-    doc_ref = db.collection(u'users').document(str(identifier))
-    doc_ref.set({
-        u'Anouk': 23,
-        u'Daphne': 39,
-        u'Kevin': 1815
-        })
+def updateForeign(u, name, value):
+    t = getIDFromName(name)
+    newData = getMoney(t)
+    print('int value : '+str(int(value)))
+    print('float value : '+str(float(value)))
+    print('value : '+str(value))
+    print('newData[u]: '+str(newData[u]))
+    v = round(newData[u] - value, 2)
+    print('newData[u]: '+str(v))
+    newData[u] = v
+    print('newData[u]: '+str(newData[u]))
+    doc_ref2 = db.collection(u'users').document(str(t))
+    doc_ref2.set(newData)
+
+
+def pushMoney(user, value, command, refund):
+    keymap = getMoney(user.id)
+    if refund:
+        split = 1
+    else:
+        split = len(command)+1
+
+    if 'Everyone' in command:
+        split = len(db_users)
+
+    v = round(int(value) / split,2)
+
+    print('paid : '+str(value)+'$')
+    print('split between : '+str(split))
+    print('spliting : '+str(v)+'$')
+    if 'Everyone' not in command:
+        for c in command:
+            value = round(keymap[c] + v, 2)
+            keymap[c] = value
+            updateForeign(user.name, c, v)
+    else:
+        for k in keymap:
+            value = round(keymap[k] + v, 2)
+            keymap[k] = value
+            updateForeign(user.name, k, v)
+
+    doc_ref = db.collection(u'users').document(str(user.id))
+    doc_ref.set(keymap)
+
+    return keymap
 
 def getMoney(identifier):
     users_ref = db.collection(u'users')
@@ -53,10 +89,51 @@ def getMoney(identifier):
                 link[k] = v
     return link
 
+def getIDFromName(name):
+    users_ref = db.collection(u'name')
+    docs = users_ref.stream()
+    for doc in docs:
+        if doc.id == str(name):
+            for k, v in doc.to_dict().items():
+                return v
+
+def fetchUsers():
+    print('fetch users')
+    users_ref = db.collection(u'name')
+    docs = users_ref.stream()
+    for doc in docs:
+            for k, v in doc.to_dict().items():
+                    db_users.append(User(doc.id, v))
+
+    for x in db_users:
+        print(x.name+':'+x.id)
+
+
 # --------------------------------------
+
 def getUser(identifier):
-    for user in users_list:
-        if user.id == identifier:
+    for user in getAllUsers():
+        if int(user.id) == int(identifier):
             user.setlink(getMoney(user.id))
             return user
     return None
+
+def getAllUsers():
+    if len(db_users) == 0:
+        fetchUsers()
+    return db_users
+
+def dbHandlerUpdate(collection, document, data, time):
+    db.collection(collection).document(time).set(data)
+
+def dbHandlerFetchlog():
+    logs_ref = db.collection(u'logger')
+    return logs_ref.stream()
+
+def dbHandlerWipe():
+    docs_ref = db.collection(u'users')
+    for doc in docs_ref.stream():
+        obj = {}
+        for k, v in doc.to_dict().items():
+            obj[k] = 0
+        docs_ref = db.collection(u'users').document(doc.id).set(obj)
