@@ -35,6 +35,7 @@ pip install -r requirements.txt
 ```
 
 3. Set up environment variables:
+ 
 Copy `configuration-sample.yaml` into `configuration.yaml` in the project root directory and provide the following information:
 You can define seperate credentials for production and development environment.
 
@@ -50,6 +51,7 @@ FIRESTORE_CREDENTIALS: /path/to/your/credentials.json
 docker-compose up --build
 ```
 6. Register users
+
 Once the bot is running, you need to configure the groupchat users to firebase.
 This can be done by running the bot /register command.
 More information can be found using the /help command.
