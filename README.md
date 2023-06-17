@@ -28,37 +28,24 @@ Follow these steps to get the Telegram bot up and running:
 git clone https://github.com/felixatschool/Telegram-Ledger
 ```
 
-2. Install the required dependencies:
-
-```shell
-pip install -r requirements.txt
-```
-
-3. Set up environment variables:
+2. Set up environment variables:
  
 Copy `configuration-sample.yaml` into `configuration.yaml` in the project root directory and provide the following information:
 You can define seperate credentials for production and development environment.
 
 ```yaml
-BOT_TOKEN: 1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi
 TELEGRAM_TOKEN: your-telegram-bot-token
 FIRESTORE_PROJECT_ID: your-firestore-project-id
 FIRESTORE_CREDENTIALS: /path/to/your/credentials.json
 ```
-5. Build and run the Docker container:
+3. Build and run the Docker container:
 
 ```shell
-docker-compose up --build
+docker compose up -d
 ```
-6. Register users
-
-Once the bot is running, you need to configure the groupchat users to firebase.
-This can be done by running the bot /register command.
-More information can be found using the /help command.
-
 ## Usage
 
-Once the Telegram bot is running, you can interact with it through your Telegram account. Start a conversation with the bot using its username and explore the available commands and features.
+Once the Telegram bot is running, you can interact with it through your Telegram account. Start a conversation with the bot using its username and explore the available commands and features. To configure users use the /register command. For more information refer to the /help command.
 
 ## Project structure
 Commands are defined as handles and registered through the index
