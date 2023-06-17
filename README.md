@@ -25,7 +25,7 @@ Follow these steps to get the Telegram bot up and running:
 1. Clone the repository:
 
 ```shell
-git clone https://github.com/your-username/telegram-bot-docker-firestore.git
+git clone https://github.com/felixatschool/Telegram-Ledger
 ```
 
 2. Install the required dependencies:
@@ -77,8 +77,8 @@ This project is licensed under the MIT License.
 
 ## Acknowledgements
 
-[python-telegram-bot][https://github.com/python-telegram-bot/python-telegram-bot] - A Python wrapper for the Telegram Bot API.
-[firebase-admin][https://github.com/firebase/firebase-admin-python] - Firebase Admin SDK for Python.
-[python-telegram-bot-template][https://github.com/jansenicus/python-telegram-bot-template] - Modular python-telegram-bot template.
+[python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) - A Python wrapper for the Telegram Bot API.
+[firebase-admin](https://github.com/firebase/firebase-admin-python) - Firebase Admin SDK for Python.
+[python-telegram-bot-template](https://github.com/jansenicus/python-telegram-bot-template) - Modular python-telegram-bot template.
 
 Feel free to customize the structure according to your specific project needs. Make sure to include the necessary installation and setup instructions, as well as any relevant information for contributors or users of your Telegram bot.
