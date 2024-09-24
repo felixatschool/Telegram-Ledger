@@ -26,6 +26,7 @@ class User:
             command.append(k)
         return command
 
+#path = '/home/uthceare/Documents/telegram-ledgerbot/bot/firebasekey.json'
 path = './firebasekey.json'
 cred = credentials.Certificate(path)
 app = firebase_admin.initialize_app(cred)
@@ -122,6 +123,36 @@ def getAllUsers():
     if len(db_users) == 0:
         fetchUsers()
     return db_users
+
+def addNewUser(user_id, user_name):
+    users_ref = db.collection('users')
+    user_id = str(user_id)
+    already_created = False
+
+    for user_doc in users_ref.stream():
+        if(user_doc.id == user_id):
+            already_created = True
+
+    if already_created:
+        return "User already exists."
+    else:
+        name_collection_ref = db.collection('name')
+        name_docs = name_collection_ref.stream()
+        new_user_data = {}
+        for name_doc in name_docs:
+            name = name_doc.id
+            new_user_data[name] = 0
+
+        users_ref.document(user_id).set(new_user_data)
+        name_collection_ref.document(user_name).set({'id': user_id})
+
+        for user_doc in users_ref.stream():
+            if(user_doc.id == user_id): continue
+            user_ref = user_doc.reference
+            user_ref.set({user_name: 0}, merge=True)
+
+        return(f"New user {user_name} added with ID '{user_id}'.")
+
 
 def dbHandlerUpdate(collection, document, data, time):
     db.collection(collection).document(time).set(data)
