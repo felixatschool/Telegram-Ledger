@@ -1,4 +1,5 @@
 import firebase_admin
+import time
 from firebase_admin import credentials
 from firebase_admin import firestore
 from .users import getUser
@@ -41,13 +42,25 @@ def admin(update, context):
         restore(update, context)
         logs = getLogs()
         print('got logs')
+        count = 0
         for log in logs:
+            count += 1
             update.message.from_user.id = log.user
             text = '/admin '
             name = getUser(log.user).name + ' '
             update.message.text = text + name + log.action + ' /nolog'
             print('call recurs')
-            admin(update, context)
+            for _ in range(3):
+                try:
+                    admin(update, context)
+                    break
+                except Exception as e:
+                    print(f"An error occurred: {str(e)}")
+                    time.sleep(2)
+            time.sleep(1)
+            if count == 10:
+                time.sleep(3)
+                count = 0
         return
 
     if(message[c_pos+1:c_pos+7] == 'report'):
