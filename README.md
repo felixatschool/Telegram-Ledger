@@ -1,133 +1,75 @@
-# Python Telegram Ledgerbot
+# Ledger for Telegram groupchat
 
-This bot has been developped to allow users to keep track of expenses in a telegram groupchat.
-Forked from jansenicus [python-telegram-bot-template](https://github.com/jansenicus/python-telegram-bot-template)
+This repository contains a Telegram bot built with Python that can be run using Docker and utilizes Firestore as its database.
+The purpose of this project is to provide ledger capabilites to Telegram making it easy to register and keep track of expenses within a groupchat.
+
+- Split an expenses with another user
+- Split an expenses with every other users
+- Refund a single user
+- Display the value owed to every other users
 
 ![Ledgerbot](/assets/ledgerbot.png?raw=true "Ledgerbot")
 
-## Features
+## Prerequisites
 
-- ### Split an expenses with another user
+Before running the Telegram bot, make sure you have the following prerequisites set up:
 
-- ### Split an expenses with every other users
+- Docker installed on your machine
+- A Firestore database set up on Google Cloud Platform
+- Telegram Bot API token obtained from BotFather
 
-- ### Refund a single user
+## Getting Started
 
-- ### Display the value owed to every other users
+Follow these steps to get the Telegram bot up and running:
 
+1. Clone the repository:
 
-## _Easy configuration_ with a yaml file
-`configuration.yaml`
+```shell
+git clone https://github.com/felixatschool/Telegram-Ledger
+```
+
+2. Set up environment variables:
+ 
+Copy `configuration-sample.yaml` into `configuration.yaml` in the project root directory and provide the following information:
+You can define seperate credentials for production and development environment.
+
 ```yaml
-prod:
-  - botname: My Production Bot
-    username: my_production_bot
-    token: 
-      1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi
-    about:
-      "this is some short text about my bot"
-    description:
-      "This is a description of what my bot can do which customer will use"
+TELEGRAM_TOKEN: your-telegram-bot-token
+FIRESTORE_PROJECT_ID: your-firestore-project-id
+FIRESTORE_CREDENTIALS: /path/to/your/credentials.json
 ```
+3. Build and run the Docker container:
 
-## _Clear separation between Development Bot vs Production Bot_ 
-`configuration.yaml`
-```yaml
-dev:
-  - botname: Development Bot
-    username: my_development_bot
-    token: 
-      1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi
-    about:
-      "this is some short text about development bot  "
-    description:
-      "This is a description of what my development bot can do with testing"
+```shell
+docker compose up -d
 ```
-choose the mode
-```yaml
-mode: dev
-```
-or 
-```yaml
-mode: prod
-```
-## _Simplicity and sophistication met in one place_
+## Usage
 
-  - `handlers` directory: as a placeholder for all command handlers  
-  - `index.py` file: to register all the function members
+Once the Telegram bot is running, you can interact with it through your Telegram account. Start a conversation with the bot using its username and explore the available commands and features. To configure users use the /register command. For more information refer to the /help command.
 
-## _Ready to deploy_ as a docker container
-Just run
-```bash
+## Project structure
+Commands are defined as handles and registered through the index
+- `handlers` directory: as a placeholder for all command handlers  
+- `index.py` file: to register all the function members
 
-docker-compose up --build
+## Firestore Database
 
-```
+The Firestore database is used to store and manage ledger entries for the Telegram bot. To access and manage your Firestore database, refer to the official Firestore documentation.
 
-# Steps 
-  ## 1. Preparation
-  - prepare two bot accounts from [@botfather](https:///t.me/botfather)
-  - one bot will be used for development 
-  - another bot for production
-  
-  ## 2. Clone This Repository
-  ```bash
+## Contributing
 
-    git clone https://github.com/felixatschool/telegram-ledgerbot
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
+## License
 
-  ```
-  ## 3. Edit configuration file
-  - edit `configuration-sample.yaml` and save it as `configuration.yaml`
-   ```yaml
-mode: prod
-prod:
-  - botname: My Production Bot
-    username: my_production_bot
-    token: 
-      1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi
-    about:
-      "this is some short text about my bot"
-    description:
-      "This is a description of what my bot can do which customer will use"
+This project is licensed under the GPLv3 License.
 
-```
+## Acknowledgements
 
-  ## 4. Run Directly in local machine
+[python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot) - A Python wrapper for the Telegram Bot API.
 
-  Make sure you are in the `bot` directory to install all the requirements and then run the telegram bot
-  ```bash
+[firebase-admin](https://github.com/firebase/firebase-admin-python) - Firebase Admin SDK for Python.
 
-    cd bot
-    pipenv install -r requirements.txt
-    pipenv run python main.py
+[python-telegram-bot-template](https://github.com/jansenicus/python-telegram-bot-template) - Modular python-telegram-bot template.
 
-  ```
-
-  ## 5. Build and Run Docker container as a Service
-  ### Build Docker container
-  ```bash
-
-      docker build -t telegram-ledgerbot -f Dockerfile .
-
-  ```
-
-  ### Run Docker container as a Service
-  ```bash
-
-      docker run -it --workdir /home telegram-ledgerbot pipenv run python main.py
-
-  ```
-  ### Build and run in one go
-  You could also build and run in one go for the first time
-  ```bash
-
-      docker-compose up -d
-
-  ```
-  or you could also force build every you want to apply change into the image
-  ```bash
-
-      docker-compose up -d --build
-
-  ```
+Feel free to customize the structure according to your specific project needs. Make sure to include the necessary installation and setup instructions, as well as any relevant information for contributors or users of your Telegram bot.
