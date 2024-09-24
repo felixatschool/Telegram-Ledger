@@ -78,6 +78,9 @@ def buy(update, context):
         command = getInputCommand(update.message.text, user.getCommand())
         if len(command) == 0:
             raise Exception('Not a valid target.\nTo get more help type \'/buy -help\'')
+        elif 'Everyone' in command:
+            raise Exception('The everyone command is not currently supported.')
+            return
 
         oldLink = getMoney(userid)
         link = pushMoney(user, value, command, False)
