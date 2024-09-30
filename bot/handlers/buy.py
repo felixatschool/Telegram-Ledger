@@ -10,25 +10,20 @@ def getInputCommand(message, userCommand):
         command = []
         index = 4;
         c_pos = 0;
-        if message.count('-') > 2:
+        if message.count('-') > 3:
             return []
         while message[index:].find('-') != -1:
             c_pos = message[index:].find('-') + 1 + index
             if c_pos == -1 or c_pos == len(message):
                 print('no cpos')
                 return []
-            #print('index + c_pos : '+str(index+c_pos))
-            e_pos = message[index + c_pos:].find(' ') + 2 + index + c_pos
-            #print('e_pos : '+str(e_pos))
-
-            d_pos = message[index + c_pos:].find(' ') 
-            #print('d_pos : '+str(d_pos))
+            d_pos = message[c_pos:].find(' ') 
             if d_pos == -1:
                 d_pos = len(message)
                 if message[-6:] == "/nolog":
                     d_pos += -7
             else:
-                d_pos = index + c_pos + d_pos
+                d_pos = c_pos + d_pos
 
             char = message[c_pos:d_pos]
             if char not in userCommand and char !='Everyone':
